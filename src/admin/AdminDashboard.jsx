@@ -52,26 +52,26 @@ export default function AdminDashboard() {
 
     return (
         <Box>
-            <Typography variant="h4" fontWeight={800} gutterBottom>Dashboard</Typography>
-            <Typography color="text.secondary" mb={4}>Welcome back! Here's what's happening.</Typography>
+            <Typography fontWeight={800} gutterBottom sx={{ fontSize: { xs: "1.4rem", md: "2.125rem" } }}>Dashboard</Typography>
+            <Typography color="text.secondary" mb={{ xs: 2, md: 4 }} variant="body2">Welcome back! Here's what's happening.</Typography>
 
             {/* Stat Cards */}
-            <Grid container spacing={3} mb={4}>
+            <Grid container spacing={{ xs: 2, md: 3 }} mb={{ xs: 3, md: 4 }}>
                 {statCards.map((c) => (
-                    <Grid item xs={12} sm={6} md={3} key={c.label}>
+                    <Grid item xs={6} sm={6} md={3} key={c.label}>
                         <Card sx={{ borderRadius: 4, border: "none", boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>
-                            <CardContent sx={{ p: 3 }}>
+                            <CardContent sx={{ p: { xs: 2, md: 3 } }}>
                                 <Box display="flex" justifyContent="space-between" alignItems="flex-start">
                                     <Box>
-                                        <Typography color="text.secondary" variant="body2" fontWeight={500} mb={1}>
+                                        <Typography color="text.secondary" variant="caption" fontWeight={500} mb={0.5} display="block">
                                             {c.label}
                                         </Typography>
-                                        <Typography variant="h4" fontWeight={800}>{c.value}</Typography>
+                                        <Typography fontWeight={800} sx={{ fontSize: { xs: "1.3rem", md: "2.125rem" } }}>{c.value}</Typography>
                                     </Box>
                                     <Box sx={{
-                                        width: 52, height: 52, borderRadius: 3,
+                                        width: { xs: 40, md: 52 }, height: { xs: 40, md: 52 }, borderRadius: 3,
                                         bgcolor: c.bg, color: c.color,
-                                        display: "flex", alignItems: "center", justifyContent: "center"
+                                        display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
                                     }}>
                                         {c.icon}
                                     </Box>
@@ -84,10 +84,11 @@ export default function AdminDashboard() {
 
             {/* Recent Orders */}
             <Paper sx={{ borderRadius: 4, overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>
-                <Box sx={{ p: 3, borderBottom: "1px solid #f1f5f9" }}>
+                <Box sx={{ p: { xs: 2, md: 3 }, borderBottom: "1px solid #f1f5f9" }}>
                     <Typography variant="h6" fontWeight={700}>Recent Orders</Typography>
                 </Box>
-                <Table>
+                <Box sx={{ overflowX: "auto" }}>
+                <Table sx={{ minWidth: 500 }}>
                     <TableHead sx={{ bgcolor: "#f8fafc" }}>
                         <TableRow>
                             {["Order ID", "Customer", "Amount", "Status", "Date"].map((h) => (
@@ -104,32 +105,33 @@ export default function AdminDashboard() {
                             </TableRow>
                         ) : recentOrders.map((o) => (
                             <TableRow key={o._id} hover>
-                                <TableCell sx={{ fontFamily: "monospace", fontWeight: 600, color: "#6366f1" }}>
+                                <TableCell sx={{ fontFamily: "monospace", fontWeight: 600, color: "#6366f1", fontSize: { xs: 11, md: 13 } }}>
                                     #{o._id.slice(-8).toUpperCase()}
                                 </TableCell>
                                 <TableCell>
-                                    <Box display="flex" alignItems="center" gap={1.5}>
-                                        <Avatar sx={{ width: 32, height: 32, bgcolor: "#ede9fe", color: "#6366f1", fontSize: 13, fontWeight: 700 }}>
+                                    <Box display="flex" alignItems="center" gap={1}>
+                                        <Avatar sx={{ width: 28, height: 28, bgcolor: "#ede9fe", color: "#6366f1", fontSize: 12, fontWeight: 700 }}>
                                             {o.user?.name?.charAt(0).toUpperCase()}
                                         </Avatar>
                                         <Box>
-                                            <Typography variant="body2" fontWeight={600}>{o.user?.name}</Typography>
-                                            <Typography variant="caption" color="text.secondary">{o.user?.email}</Typography>
+                                            <Typography variant="body2" fontWeight={600} sx={{ fontSize: { xs: "0.75rem", md: "0.875rem" } }}>{o.user?.name}</Typography>
+                                            <Typography variant="caption" color="text.secondary" sx={{ display: { xs: "none", sm: "block" } }}>{o.user?.email}</Typography>
                                         </Box>
                                     </Box>
                                 </TableCell>
-                                <TableCell><Typography fontWeight={700} color="success.main">${o.totalAmount.toFixed(2)}</Typography></TableCell>
+                                <TableCell><Typography fontWeight={700} color="success.main" sx={{ fontSize: { xs: "0.8rem", md: "0.875rem" } }}>${o.totalAmount.toFixed(2)}</Typography></TableCell>
                                 <TableCell>
                                     <Chip label={o.status} color={statusColor[o.status]} size="small"
-                                        sx={{ fontWeight: 600, textTransform: "capitalize" }} />
+                                        sx={{ fontWeight: 600, textTransform: "capitalize", fontSize: { xs: 10, md: 12 } }} />
                                 </TableCell>
-                                <TableCell sx={{ color: "#64748b", fontSize: 13 }}>
+                                <TableCell sx={{ color: "#64748b", fontSize: { xs: 11, md: 13 } }}>
                                     {new Date(o.createdAt).toLocaleDateString()}
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
+                </Box>
             </Paper>
         </Box>
     );

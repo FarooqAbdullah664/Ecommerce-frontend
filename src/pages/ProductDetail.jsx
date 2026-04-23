@@ -75,10 +75,10 @@ export default function ProductDetail() {
 
     return (
         <Box sx={{ bgcolor: "#f8fafc", minHeight: "100vh" }}>
-            <Container maxWidth="lg" sx={{ py: 5 }}>
+            <Container maxWidth="lg" sx={{ py: { xs: 3, md: 5 }, px: { xs: 2, sm: 3 } }}>
 
                 {/* Breadcrumb */}
-                <Box display="flex" alignItems="center" gap={2} mb={4}>
+                <Box display="flex" alignItems="center" gap={{ xs: 1, md: 2 }} mb={{ xs: 3, md: 4 }} flexWrap="wrap">
                     <Button startIcon={<ArrowBackIcon />} onClick={() => navigate(-1)}
                         sx={{ color: "#64748b", borderRadius: 3, "&:hover": { bgcolor: "#f0f0ff", color: "#6366f1" } }}>
                         Back
@@ -86,14 +86,14 @@ export default function ProductDetail() {
                     <Breadcrumbs sx={{ "& a": { color: "#6366f1", textDecoration: "none", fontWeight: 500 } }}>
                         <Link to="/">Home</Link>
                         <Link to="/products">Products</Link>
-                        <Typography color="text.primary" fontWeight={600}>{product.name}</Typography>
+                        <Typography color="text.primary" fontWeight={600} sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}>{product.name}</Typography>
                     </Breadcrumbs>
                 </Box>
 
-                <Grid container spacing={6}>
+                <Grid container spacing={{ xs: 3, md: 6 }}>
                     {/* ===== IMAGE ===== */}
                     <Grid item xs={12} md={5}>
-                        <Box sx={{ position: "sticky", top: 90 }}>
+                        <Box sx={{ position: { md: "sticky" }, top: { md: 90 } }}>
                             <Paper elevation={0} sx={{
                                 borderRadius: 5, overflow: "hidden",
                                 border: "1px solid #f1f5f9",
@@ -135,8 +135,8 @@ export default function ProductDetail() {
                         </Box>
 
                         {/* Name */}
-                        <Typography variant="h3" fontWeight={800} gutterBottom
-                            sx={{ lineHeight: 1.2, color: "#0f172a" }}>
+                        <Typography fontWeight={800} gutterBottom
+                            sx={{ lineHeight: 1.2, color: "#0f172a", fontSize: { xs: "1.6rem", md: "3rem" } }}>
                             {product.name}
                         </Typography>
 
@@ -152,7 +152,7 @@ export default function ProductDetail() {
                         </Typography>
 
                         {/* Price */}
-                        <Box sx={{ p: 3, bgcolor: "white", borderRadius: 4, border: "1px solid #f1f5f9", mb: 3 }}>
+                        <Box sx={{ p: { xs: 2, md: 3 }, bgcolor: "white", borderRadius: 4, border: "1px solid #f1f5f9", mb: 3 }}>
                             <Box display="flex" gap={2} alignItems="center" mb={1}>
                                 {product.discountPrice ? (
                                     <>

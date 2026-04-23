@@ -93,12 +93,12 @@ export default function Checkout() {
     );
 
     return (
-        <Container maxWidth="lg" sx={{ py: 5 }}>
-            <Typography variant="h4" fontWeight={800} mb={1}>Checkout</Typography>
-            <Typography color="text.secondary" mb={4}>Complete your purchase</Typography>
+        <Container maxWidth="lg" sx={{ py: { xs: 3, md: 5 }, px: { xs: 2, sm: 3 } }}>
+            <Typography fontWeight={800} mb={1} sx={{ fontSize: { xs: "1.5rem", md: "2.125rem" } }}>Checkout</Typography>
+            <Typography color="text.secondary" mb={{ xs: 3, md: 4 }}>Complete your purchase</Typography>
 
             {/* Stepper */}
-            <Stepper activeStep={activeStep} sx={{ mb: 5 }}>
+            <Stepper activeStep={activeStep} sx={{ mb: { xs: 3, md: 5 } }}>
                 {steps.map((label, i) => (
                     <Step key={label}>
                         <StepLabel
@@ -108,16 +108,16 @@ export default function Checkout() {
                                     "&.Mui-completed": { color: "#10b981" }
                                 }
                             }}>
-                            <Typography fontWeight={activeStep === i ? 700 : 400}>{label}</Typography>
+                            <Typography fontWeight={activeStep === i ? 700 : 400} sx={{ fontSize: { xs: "0.75rem", md: "0.875rem" } }}>{label}</Typography>
                         </StepLabel>
                     </Step>
                 ))}
             </Stepper>
 
-            <Grid container spacing={4}>
+            <Grid container spacing={{ xs: 2, md: 4 }}>
                 {/* Left - Steps */}
                 <Grid item xs={12} md={7}>
-                    <Paper sx={{ borderRadius: 4, p: 4, boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>
+                    <Paper sx={{ borderRadius: 4, p: { xs: 2.5, md: 4 }, boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>
                         {error && <Alert severity="error" sx={{ mb: 3, borderRadius: 2 }}>{error}</Alert>}
 
                         {/* ===== STEP 1: SHIPPING ===== */}
@@ -342,7 +342,7 @@ export default function Checkout() {
 
                 {/* Right - Order Summary */}
                 <Grid item xs={12} md={5}>
-                    <Paper sx={{ borderRadius: 4, p: 3, boxShadow: "0 4px 20px rgba(0,0,0,0.06)", position: "sticky", top: 80 }}>
+                    <Paper sx={{ borderRadius: 4, p: { xs: 2.5, md: 3 }, boxShadow: "0 4px 20px rgba(0,0,0,0.06)", position: { md: "sticky" }, top: { md: 80 } }}>
                         <Typography variant="h6" fontWeight={800} mb={3}>Order Summary</Typography>
 
                         {cart.map((item) => (

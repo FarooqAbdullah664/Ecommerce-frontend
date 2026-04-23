@@ -40,12 +40,12 @@ export default function MyOrders() {
 
                 {/* Header */}
                 <Box display="flex" alignItems="center" justifyContent="space-between" mb={5} flexWrap="wrap" gap={2}>
-                    <Box display="flex" alignItems="center" gap={2}>
-                        <Box sx={{ width: 52, height: 52, borderRadius: 3, bgcolor: "#ede9fe", color: "#6366f1", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                            <ShoppingBagIcon sx={{ fontSize: 26 }} />
+                    <Box display="flex" alignItems="center" gap={{ xs: 1.5, md: 2 }}>
+                        <Box sx={{ width: { xs: 44, md: 52 }, height: { xs: 44, md: 52 }, borderRadius: 3, bgcolor: "#ede9fe", color: "#6366f1", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <ShoppingBagIcon sx={{ fontSize: { xs: 22, md: 26 } }} />
                         </Box>
                         <Box>
-                            <Typography variant="h4" fontWeight={800}>My Orders</Typography>
+                            <Typography fontWeight={800} sx={{ fontSize: { xs: "1.4rem", md: "2.125rem" } }}>My Orders</Typography>
                             <Typography color="text.secondary" variant="body2">
                                 {orders.length} order{orders.length !== 1 ? "s" : ""} total
                             </Typography>
@@ -84,34 +84,28 @@ export default function MyOrders() {
                                 }}>
                                     {/* Order Header Bar */}
                                     <Box sx={{
-                                        px: 3, py: 2,
+                                        px: { xs: 2, md: 3 }, py: { xs: 1.5, md: 2 },
                                         bgcolor: "#f8fafc",
                                         borderBottom: "1px solid #f1f5f9",
                                         display: "flex", justifyContent: "space-between",
                                         alignItems: "center", flexWrap: "wrap", gap: 2
                                     }}>
-                                        <Box display="flex" gap={4} flexWrap="wrap">
+                                        <Box display="flex" gap={{ xs: 2, md: 4 }} flexWrap="wrap">
                                             <Box>
-                                                <Typography variant="caption" color="text.secondary" fontWeight={600} sx={{ letterSpacing: 0.5 }}>
-                                                    ORDER ID
-                                                </Typography>
-                                                <Typography fontFamily="monospace" fontWeight={700} color="#6366f1">
-                                                    #{o._id.slice(-10).toUpperCase()}
+                                                <Typography variant="caption" color="text.secondary" fontWeight={600} sx={{ letterSpacing: 0.5 }}>ORDER ID</Typography>
+                                                <Typography fontFamily="monospace" fontWeight={700} color="#6366f1" sx={{ fontSize: { xs: "0.8rem", md: "1rem" } }}>
+                                                    #{o._id.slice(-8).toUpperCase()}
                                                 </Typography>
                                             </Box>
                                             <Box>
-                                                <Typography variant="caption" color="text.secondary" fontWeight={600} sx={{ letterSpacing: 0.5 }}>
-                                                    DATE
-                                                </Typography>
+                                                <Typography variant="caption" color="text.secondary" fontWeight={600} sx={{ letterSpacing: 0.5 }}>DATE</Typography>
                                                 <Typography fontWeight={600} variant="body2">
                                                     {new Date(o.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}
                                                 </Typography>
                                             </Box>
                                             <Box>
-                                                <Typography variant="caption" color="text.secondary" fontWeight={600} sx={{ letterSpacing: 0.5 }}>
-                                                    TOTAL
-                                                </Typography>
-                                                <Typography fontWeight={800} color="primary.main" variant="body1">
+                                                <Typography variant="caption" color="text.secondary" fontWeight={600} sx={{ letterSpacing: 0.5 }}>TOTAL</Typography>
+                                                <Typography fontWeight={800} color="primary.main" sx={{ fontSize: { xs: "0.9rem", md: "1rem" } }}>
                                                     ${o.totalAmount.toFixed(2)}
                                                 </Typography>
                                             </Box>
@@ -129,14 +123,14 @@ export default function MyOrders() {
 
                                     <CardContent sx={{ p: 3 }}>
                                         {/* Items */}
-                                        <Grid container spacing={2.5}>
+                                        <Grid container spacing={{ xs: 1.5, md: 2.5 }}>
                                             {o.items.map((item) => (
                                                 <Grid item xs={12} sm={6} md={4} key={item._id}>
-                                                    <Box display="flex" gap={2} alignItems="center"
-                                                        sx={{ p: 2, bgcolor: "#f8fafc", borderRadius: 3, border: "1px solid #f1f5f9" }}>
+                                                    <Box display="flex" gap={{ xs: 1.5, md: 2 }} alignItems="center"
+                                                        sx={{ p: { xs: 1.5, md: 2 }, bgcolor: "#f8fafc", borderRadius: 3, border: "1px solid #f1f5f9" }}>
                                                         <Box component="img"
-                                                            src={item.product?.image || `https://placehold.co/65x65/f0f0ff/6366f1?text=${encodeURIComponent(item.name)}`}
-                                                            sx={{ width: 65, height: 65, borderRadius: 3, objectFit: "cover", flexShrink: 0 }}
+                                                            src={item.product?.image || `https://placehold.co/60x60/f0f0ff/6366f1?text=${encodeURIComponent(item.name)}`}
+                                                            sx={{ width: { xs: 50, md: 65 }, height: { xs: 50, md: 65 }, borderRadius: 3, objectFit: "cover", flexShrink: 0 }}
                                                         />
                                                         <Box>
                                                             <Typography variant="body2" fontWeight={700} sx={{

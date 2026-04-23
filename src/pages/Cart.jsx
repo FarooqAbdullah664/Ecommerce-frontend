@@ -35,15 +35,15 @@ export default function Cart() {
     const grandTotal = total + shipping;
 
     return (
-        <Box sx={{ bgcolor: "#F8F9FA", minHeight: "100vh", py: 5 }}>
-            <Container maxWidth="lg">
-                <Box display="flex" alignItems="center" gap={2} mb={4}>
-                    <ShoppingCartIcon sx={{ color: "#1B2B4B", fontSize: 28 }} />
-                    <Typography variant="h4" fontWeight={800} color="#1B2B4B">Shopping Cart</Typography>
+        <Box sx={{ bgcolor: "#F8F9FA", minHeight: "100vh", py: { xs: 3, md: 5 } }}>
+            <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 3 } }}>
+                <Box display="flex" alignItems="center" gap={{ xs: 1, md: 2 }} mb={{ xs: 3, md: 4 }} flexWrap="wrap">
+                    <ShoppingCartIcon sx={{ color: "#1B2B4B", fontSize: { xs: 22, md: 28 } }} />
+                    <Typography fontWeight={800} color="#1B2B4B" sx={{ fontSize: { xs: "1.4rem", md: "2.125rem" } }}>Shopping Cart</Typography>
                     <Chip label={`${cart.length} items`} sx={{ bgcolor: "#EEF2FF", color: "#1B2B4B", fontWeight: 700 }} />
                 </Box>
 
-                <Grid container spacing={4}>
+                <Grid container spacing={{ xs: 2, md: 4 }}>
                     {/* Items */}
                     <Grid item xs={12} md={8}>
                         <Paper sx={{ borderRadius: 3, overflow: "hidden", boxShadow: "0 2px 16px rgba(27,43,75,0.08)", border: "1px solid #E5E7EB" }}>
@@ -108,7 +108,7 @@ export default function Cart() {
 
                     {/* Summary */}
                     <Grid item xs={12} md={4}>
-                        <Paper sx={{ borderRadius: 3, p: 3, boxShadow: "0 2px 16px rgba(27,43,75,0.08)", border: "1px solid #E5E7EB", position: "sticky", top: 80 }}>
+                        <Paper sx={{ borderRadius: 3, p: { xs: 2.5, md: 3 }, boxShadow: "0 2px 16px rgba(27,43,75,0.08)", border: "1px solid #E5E7EB", position: { md: "sticky" }, top: { md: 80 } }}>
                             <Typography variant="h6" fontWeight={800} color="#1B2B4B" mb={3}>Order Summary</Typography>
 
                             <Box display="flex" justifyContent="space-between" mb={1.5}>

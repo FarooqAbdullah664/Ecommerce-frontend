@@ -77,8 +77,8 @@ export default function Profile() {
                 {/* ===== HERO BANNER ===== */}
                 <Box sx={{
                     background: "linear-gradient(135deg,#0f0c29,#302b63,#24243e)",
-                    borderRadius: 5, p: { xs: 3, md: 5 }, mb: 4,
-                    display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap",
+                    borderRadius: { xs: 3, md: 5 }, p: { xs: 2.5, md: 5 }, mb: 4,
+                    display: "flex", alignItems: "center", gap: { xs: 2, md: 4 }, flexWrap: "wrap",
                     position: "relative", overflow: "hidden"
                 }}>
                     {/* Decorative circle */}
@@ -89,7 +89,7 @@ export default function Profile() {
                     }} />
 
                     <Avatar sx={{
-                        width: 90, height: 90, fontSize: 36, fontWeight: 800,
+                        width: { xs: 65, md: 90 }, height: { xs: 65, md: 90 }, fontSize: { xs: 26, md: 36 }, fontWeight: 800,
                         background: "linear-gradient(135deg,#6366f1,#8b5cf6)",
                         boxShadow: "0 8px 30px rgba(99,102,241,0.5)",
                         border: "4px solid rgba(255,255,255,0.2)"
@@ -115,7 +115,7 @@ export default function Profile() {
                         </Box>
                     </Box>
 
-                    <Box sx={{ ml: "auto", zIndex: 1, display: "flex", gap: 2 }}>
+                    <Box sx={{ ml: { xs: 0, md: "auto" }, zIndex: 1, display: "flex", gap: 2, width: { xs: "100%", md: "auto" } }}>
                         <Button component={Link} to="/orders" variant="outlined"
                             startIcon={<ShoppingBagIcon />}
                             sx={{
@@ -127,7 +127,7 @@ export default function Profile() {
                     </Box>
                 </Box>
 
-                <Grid container spacing={4}>
+                <Grid container spacing={{ xs: 2, md: 4 }}>
                     {/* ===== LEFT: Account Info ===== */}
                     <Grid item xs={12} md={4}>
                         <Paper sx={{ borderRadius: 4, overflow: "hidden", boxShadow: "0 4px 20px rgba(0,0,0,0.06)" }}>

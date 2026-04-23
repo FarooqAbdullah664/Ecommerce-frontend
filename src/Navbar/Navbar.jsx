@@ -44,29 +44,28 @@ function Navbar() {
                 boxShadow: scrolled ? "0 4px 30px rgba(27,43,75,0.08)" : "none",
                 transition: "all 0.3s ease"
             }}>
-                <Container maxWidth="xl">
-                    <Toolbar sx={{ px: "0 !important", minHeight: "70px !important", gap: 1 }}>
+                <Container maxWidth="xl" sx={{ px: { xs: 2, sm: 3, md: 4 } }}>
+                    <Toolbar sx={{ px: "0 !important", minHeight: "64px !important" }}>
 
                         {/* Logo */}
                         <Typography component={Link} to="/" sx={{
-                            fontWeight: 900, textDecoration: "none", mr: 5,
-                            fontSize: "1.55rem", letterSpacing: "-0.8px", color: "#1B2B4B",
-                            display: "flex", alignItems: "center", gap: 0.8,
-                            transition: "opacity 0.2s",
+                            fontWeight: 900, textDecoration: "none",
+                            fontSize: { xs: "1.15rem", md: "1.55rem" }, letterSpacing: "-0.8px", color: "#1B2B4B",
+                            display: "flex", alignItems: "center", gap: 0.8, flexShrink: 0,
                             "&:hover": { opacity: 0.85 }
                         }}>
                             <Box sx={{
-                                width: 32, height: 32, borderRadius: 2,
+                                width: { xs: 28, md: 32 }, height: { xs: 28, md: 32 }, borderRadius: 2,
                                 background: "linear-gradient(135deg, #1B2B4B, #2d4a7a)",
-                                display: "flex", alignItems: "center", justifyContent: "center"
+                                display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
                             }}>
-                                <StorefrontOutlinedIcon sx={{ color: "#FF6B6B", fontSize: 18 }} />
+                                <StorefrontOutlinedIcon sx={{ color: "#FF6B6B", fontSize: { xs: 15, md: 18 } }} />
                             </Box>
                             Shop<Box component="span" sx={{ color: "#FF6B6B" }}>Zone</Box>
                         </Typography>
 
-                        {/* Nav Links */}
-                        <Box sx={{ display: { xs: "none", md: "flex" }, gap: 0.5, flexGrow: 1 }}>
+                        {/* Nav Links - Desktop only, takes remaining space */}
+                        <Box sx={{ display: { xs: "none", md: "flex" }, gap: 0.5, flexGrow: 1, ml: 4 }}>
                             {[
                                 { label: "Home", to: "/", icon: <HomeOutlinedIcon sx={{ fontSize: 16 }} /> },
                                 { label: "Products", to: "/products", icon: <StorefrontOutlinedIcon sx={{ fontSize: 16 }} /> }
@@ -102,7 +101,7 @@ function Navbar() {
                         </Box>
 
                         {/* Right Side */}
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1, ml: "auto" }}>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 0.5, md: 1 }, ml: "auto", flexShrink: 0 }}>
 
                             {/* Cart Button */}
                             <IconButton
@@ -111,11 +110,10 @@ function Navbar() {
                                     color: "#1B2B4B",
                                     bgcolor: "rgba(27,43,75,0.05)",
                                     borderRadius: 2.5,
-                                    width: 42, height: 42,
+                                    width: { xs: 36, md: 42 }, height: { xs: 36, md: 42 },
                                     transition: "all 0.2s",
                                     "&:hover": {
-                                        bgcolor: "#1B2B4B",
-                                        color: "white",
+                                        bgcolor: "#1B2B4B", color: "white",
                                         transform: "translateY(-1px)",
                                         boxShadow: "0 4px 15px rgba(27,43,75,0.25)"
                                     }
@@ -314,10 +312,12 @@ function Navbar() {
                                     color: "#1B2B4B",
                                     bgcolor: "rgba(27,43,75,0.05)",
                                     borderRadius: 2,
-                                    ml: 0.5
+                                    width: 36, height: 36,
+                                    ml: 0.5,
+                                    flexShrink: 0
                                 }}
                                 onClick={() => setMobileOpen(true)}>
-                                <MenuRoundedIcon />
+                                <MenuRoundedIcon sx={{ fontSize: 20 }} />
                             </IconButton>
                         </Box>
                     </Toolbar>
