@@ -218,6 +218,7 @@ export default function ProductDetail() {
                                         sx={{
                                             borderRadius: 3, px: 3, fontWeight: 700,
                                             borderColor: "#6366f1", color: "#6366f1",
+                                            flex: { xs: 1, sm: "unset" },
                                             "&:hover": { bgcolor: "#f0f0ff" }
                                         }}>
                                         Add to Cart
@@ -228,6 +229,7 @@ export default function ProductDetail() {
                                         onClick={handleBuyNow}
                                         sx={{
                                             borderRadius: 3, px: 4, fontWeight: 700,
+                                            flex: { xs: 1, sm: "unset" },
                                             background: "linear-gradient(135deg,#6366f1,#8b5cf6)",
                                             boxShadow: "0 8px 25px rgba(99,102,241,0.35)",
                                             "&:hover": { boxShadow: "0 12px 35px rgba(99,102,241,0.5)" }

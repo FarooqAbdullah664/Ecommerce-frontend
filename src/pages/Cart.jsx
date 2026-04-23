@@ -49,41 +49,43 @@ export default function Cart() {
                         <Paper sx={{ borderRadius: 3, overflow: "hidden", boxShadow: "0 2px 16px rgba(27,43,75,0.08)", border: "1px solid #E5E7EB" }}>
                             {cart.map((item, index) => (
                                 <Box key={item._id}>
-                                    <Box sx={{ p: 3, display: "flex", gap: 3, alignItems: "center" }}>
+                                    <Box sx={{ p: { xs: 2, sm: 3 }, display: "flex", gap: { xs: 1.5, sm: 3 }, alignItems: { xs: "flex-start", sm: "center" }, flexWrap: "wrap" }}>
                                         <Box component="img"
                                             src={item.image || `https://placehold.co/90x90/EEF2FF/1B2B4B?text=${encodeURIComponent(item.name)}`}
-                                            sx={{ width: 85, height: 85, borderRadius: 2.5, objectFit: "cover", flexShrink: 0, border: "1px solid #E5E7EB" }}
+                                            sx={{ width: { xs: 65, sm: 85 }, height: { xs: 65, sm: 85 }, borderRadius: 2.5, objectFit: "cover", flexShrink: 0, border: "1px solid #E5E7EB" }}
                                         />
-                                        <Box flexGrow={1}>
-                                            <Typography fontWeight={700} color="#1B2B4B">{item.name}</Typography>
+                                        <Box flexGrow={1} minWidth={0}>
+                                            <Typography fontWeight={700} color="#1B2B4B" noWrap>{item.name}</Typography>
                                             {item.brand && <Typography variant="caption" color="text.secondary">by {item.brand}</Typography>}
                                             <Chip label={item.category} size="small" sx={{ mt: 0.5, bgcolor: "#EEF2FF", color: "#1B2B4B", fontSize: 11 }} />
                                         </Box>
 
-                                        {/* Qty */}
-                                        <Box display="flex" alignItems="center" sx={{ border: "1px solid #E5E7EB", borderRadius: 2, overflow: "hidden" }}>
-                                            <IconButton size="small" onClick={() => updateQty(item._id, item.quantity - 1)} sx={{ color: "#1B2B4B", borderRadius: 0, "&:hover": { bgcolor: "#F8F9FA" } }}>
-                                                <RemoveIcon fontSize="small" />
-                                            </IconButton>
-                                            <Typography fontWeight={700} sx={{ px: 2, minWidth: 36, textAlign: "center", color: "#1B2B4B" }}>{item.quantity}</Typography>
-                                            <IconButton size="small" onClick={() => updateQty(item._id, item.quantity + 1)} sx={{ color: "#1B2B4B", borderRadius: 0, "&:hover": { bgcolor: "#F8F9FA" } }}>
-                                                <AddIcon fontSize="small" />
+                                        <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 1, sm: 2 }, flexWrap: "wrap", width: { xs: "100%", sm: "auto" }, justifyContent: { xs: "space-between", sm: "flex-end" } }}>
+                                            {/* Qty */}
+                                            <Box display="flex" alignItems="center" sx={{ border: "1px solid #E5E7EB", borderRadius: 2, overflow: "hidden" }}>
+                                                <IconButton size="small" onClick={() => updateQty(item._id, item.quantity - 1)} sx={{ color: "#1B2B4B", borderRadius: 0, "&:hover": { bgcolor: "#F8F9FA" } }}>
+                                                    <RemoveIcon fontSize="small" />
+                                                </IconButton>
+                                                <Typography fontWeight={700} sx={{ px: 2, minWidth: 36, textAlign: "center", color: "#1B2B4B" }}>{item.quantity}</Typography>
+                                                <IconButton size="small" onClick={() => updateQty(item._id, item.quantity + 1)} sx={{ color: "#1B2B4B", borderRadius: 0, "&:hover": { bgcolor: "#F8F9FA" } }}>
+                                                    <AddIcon fontSize="small" />
+                                                </IconButton>
+                                            </Box>
+
+                                            {/* Price */}
+                                            <Box textAlign="right">
+                                                <Typography fontWeight={800} variant="h6" color="#1B2B4B">
+                                                    ${((item.discountPrice || item.price) * item.quantity).toFixed(2)}
+                                                </Typography>
+                                                <Typography variant="caption" color="text.secondary">${item.discountPrice || item.price} each</Typography>
+                                            </Box>
+
+                                            {/* Delete */}
+                                            <IconButton onClick={() => removeFromCart(item._id)}
+                                                sx={{ color: "#FF6B6B", bgcolor: "#fff5f5", "&:hover": { bgcolor: "#fee2e2" } }}>
+                                                <DeleteOutlineIcon fontSize="small" />
                                             </IconButton>
                                         </Box>
-
-                                        {/* Price */}
-                                        <Box textAlign="right" sx={{ minWidth: 80 }}>
-                                            <Typography fontWeight={800} variant="h6" color="#1B2B4B">
-                                                ${((item.discountPrice || item.price) * item.quantity).toFixed(2)}
-                                            </Typography>
-                                            <Typography variant="caption" color="text.secondary">${item.discountPrice || item.price} each</Typography>
-                                        </Box>
-
-                                        {/* Delete */}
-                                        <IconButton onClick={() => removeFromCart(item._id)}
-                                            sx={{ color: "#FF6B6B", bgcolor: "#fff5f5", "&:hover": { bgcolor: "#fee2e2" } }}>
-                                            <DeleteOutlineIcon fontSize="small" />
-                                        </IconButton>
                                     </Box>
                                     {index < cart.length - 1 && <Divider />}
                                 </Box>
