@@ -3,10 +3,16 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import {
     Container, Grid, Typography, Button, Box, Chip,
     CircularProgress, Divider, TextField, Snackbar, Alert,
-    Breadcrumbs, Paper
+    Breadcrumbs, Paper, Skeleton
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import FlashOnIcon from "@mui/icons-material/FlashOn";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import AutorenewIcon from "@mui/icons-material/Autorenew";
+import SecurityIcon from "@mui/icons-material/Security";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 import { getProductById } from "../services/productService";
 import { useCart } from "../context/CartContext";
 
@@ -26,13 +32,6 @@ export default function ProductDetail() {
             .finally(() => setLoading(false));
     }, [id]);
 
-    if (loading) return (
-        <Box display="flex" justifyContent="center" alignItems="center" minHeight="60vh">
-            <CircularProgress size={50} />
-        </Box>
-    );
-    if (!product) return null;
-
     const handleAddToCart = () => {
         for (let i = 0; i < qty; i++) addToCart(product);
         setSnack(true);
@@ -43,114 +42,224 @@ export default function ProductDetail() {
         navigate("/cart");
     };
 
-    const discount = product.discountPrice
+    const discount = product?.discountPrice
         ? Math.round((1 - product.discountPrice / product.price) * 100)
         : 0;
 
-    return (
-        <Container maxWidth="lg" sx={{ py: 4 }}>
-            {/* Breadcrumb */}
-            <Breadcrumbs sx={{ mb: 3 }}>
-                <Link to="/" style={{ color: "#6366f1", textDecoration: "none" }}>Home</Link>
-                <Link to="/products" style={{ color: "#6366f1", textDecoration: "none" }}>Products</Link>
-                <Typography color="text.primary">{product.name}</Typography>
-            </Breadcrumbs>
+    const guarantees = [
+        { icon: <LocalShippingIcon sx={{ fontSize: 18 }} />, text: "Free shipping over $50", color: "#6366f1" },
+        { icon: <AutorenewIcon sx={{ fontSize: 18 }} />, text: "30-day easy returns", color: "#10b981" },
+        { icon: <SecurityIcon sx={{ fontSize: 18 }} />, text: "Secure checkout", color: "#f59e0b" },
+    ];
 
-            <Button startIcon={<ArrowBackIcon />} onClick={() => navigate(-1)}
-                sx={{ mb: 3, textTransform: "none" }}>
-                Back
-            </Button>
-
-            <Grid container spacing={5}>
-                {/* Image */}
-                <Grid item xs={12} md={5}>
-                    <Paper elevation={0} sx={{ borderRadius: 4, overflow: "hidden", border: "1px solid #e2e8f0" }}>
-                        <Box component="img"
-                            src={product.image || `https://placehold.co/500x450/e2e8f0/64748b?text=${encodeURIComponent(product.name)}`}
-                            alt={product.name}
-                            sx={{ width: "100%", display: "block", objectFit: "cover", maxHeight: 450 }}
-                        />
-                    </Paper>
+    if (loading) return (
+        <Box sx={{ bgcolor: "#f8fafc", minHeight: "100vh" }}>
+            <Container maxWidth="lg" sx={{ py: 5 }}>
+                <Grid container spacing={6}>
+                    <Grid item xs={12} md={5}>
+                        <Skeleton variant="rectangular" height={480} sx={{ borderRadius: 4 }} />
+                    </Grid>
+                    <Grid item xs={12} md={7}>
+                        <Skeleton variant="text" width="30%" height={30} />
+                        <Skeleton variant="text" width="80%" height={50} sx={{ mt: 1 }} />
+                        <Skeleton variant="text" width="40%" height={60} sx={{ mt: 2 }} />
+                        <Skeleton variant="rectangular" height={120} sx={{ mt: 3, borderRadius: 3 }} />
+                        <Skeleton variant="rectangular" height={56} sx={{ mt: 3, borderRadius: 3 }} />
+                    </Grid>
                 </Grid>
+            </Container>
+        </Box>
+    );
 
-                {/* Details */}
-                <Grid item xs={12} md={7}>
-                    <Box display="flex" gap={1} mb={2} flexWrap="wrap">
-                        <Chip label={product.category} sx={{ bgcolor: "#e0f2fe", color: "#0369a1", fontWeight: 600 }} />
-                        {product.brand && <Chip label={product.brand} variant="outlined" size="small" />}
-                        {discount > 0 && <Chip label={`${discount}% OFF`} color="error" size="small" />}
-                    </Box>
+    if (!product) return null;
 
-                    <Typography variant="h4" fontWeight="bold" gutterBottom>{product.name}</Typography>
-                    <Typography variant="body2" color="text.secondary" mb={1}>SKU: {product.sku}</Typography>
+    return (
+        <Box sx={{ bgcolor: "#f8fafc", minHeight: "100vh" }}>
+            <Container maxWidth="lg" sx={{ py: 5 }}>
 
-                    <Divider sx={{ my: 2 }} />
+                {/* Breadcrumb */}
+                <Box display="flex" alignItems="center" gap={2} mb={4}>
+                    <Button startIcon={<ArrowBackIcon />} onClick={() => navigate(-1)}
+                        sx={{ color: "#64748b", borderRadius: 3, "&:hover": { bgcolor: "#f0f0ff", color: "#6366f1" } }}>
+                        Back
+                    </Button>
+                    <Breadcrumbs sx={{ "& a": { color: "#6366f1", textDecoration: "none", fontWeight: 500 } }}>
+                        <Link to="/">Home</Link>
+                        <Link to="/products">Products</Link>
+                        <Typography color="text.primary" fontWeight={600}>{product.name}</Typography>
+                    </Breadcrumbs>
+                </Box>
 
-                    <Typography variant="body1" color="text.secondary" paragraph lineHeight={1.8}>
-                        {product.description}
-                    </Typography>
+                <Grid container spacing={6}>
+                    {/* ===== IMAGE ===== */}
+                    <Grid item xs={12} md={5}>
+                        <Box sx={{ position: "sticky", top: 90 }}>
+                            <Paper elevation={0} sx={{
+                                borderRadius: 5, overflow: "hidden",
+                                border: "1px solid #f1f5f9",
+                                bgcolor: "white",
+                                boxShadow: "0 8px 40px rgba(0,0,0,0.08)",
+                                position: "relative"
+                            }}>
+                                {discount > 0 && (
+                                    <Chip label={`${discount}% OFF`} color="error"
+                                        sx={{ position: "absolute", top: 16, left: 16, zIndex: 1, fontWeight: 800, fontSize: 13 }} />
+                                )}
+                                <Box component="img"
+                                    src={product.image || `https://placehold.co/600x500/f0f0ff/6366f1?text=${encodeURIComponent(product.name)}`}
+                                    alt={product.name}
+                                    sx={{
+                                        width: "100%", display: "block",
+                                        objectFit: "cover", maxHeight: 480,
+                                        transition: "transform 0.4s ease",
+                                        "&:hover": { transform: "scale(1.04)" }
+                                    }}
+                                />
+                            </Paper>
+                        </Box>
+                    </Grid>
 
-                    {/* Price */}
-                    <Box display="flex" gap={2} alignItems="center" mb={2}>
-                        {product.discountPrice ? (
-                            <>
-                                <Typography variant="h3" color="error.main" fontWeight="bold">
-                                    ${product.discountPrice}
-                                </Typography>
-                                <Box>
-                                    <Typography sx={{ textDecoration: "line-through", color: "#94a3b8", fontSize: 18 }}>
+                    {/* ===== DETAILS ===== */}
+                    <Grid item xs={12} md={7}>
+                        {/* Tags */}
+                        <Box display="flex" gap={1} mb={2.5} flexWrap="wrap">
+                            <Chip label={product.category}
+                                sx={{ bgcolor: "#ede9fe", color: "#6366f1", fontWeight: 700 }} />
+                            {product.brand && (
+                                <Chip label={`by ${product.brand}`} variant="outlined"
+                                    sx={{ borderColor: "#e2e8f0", color: "#64748b" }} />
+                            )}
+                            {discount > 0 && (
+                                <Chip label={`Save ${discount}%`} color="error" variant="outlined" />
+                            )}
+                        </Box>
+
+                        {/* Name */}
+                        <Typography variant="h3" fontWeight={800} gutterBottom
+                            sx={{ lineHeight: 1.2, color: "#0f172a" }}>
+                            {product.name}
+                        </Typography>
+
+                        <Typography variant="caption" color="text.secondary" sx={{ letterSpacing: 1 }}>
+                            SKU: {product.sku}
+                        </Typography>
+
+                        <Divider sx={{ my: 3 }} />
+
+                        {/* Description */}
+                        <Typography variant="body1" color="text.secondary" lineHeight={1.9} mb={3}>
+                            {product.description}
+                        </Typography>
+
+                        {/* Price */}
+                        <Box sx={{ p: 3, bgcolor: "white", borderRadius: 4, border: "1px solid #f1f5f9", mb: 3 }}>
+                            <Box display="flex" gap={2} alignItems="center" mb={1}>
+                                {product.discountPrice ? (
+                                    <>
+                                        <Typography variant="h3" color="error.main" fontWeight={900} lineHeight={1}>
+                                            ${product.discountPrice}
+                                        </Typography>
+                                        <Box>
+                                            <Typography sx={{ textDecoration: "line-through", color: "#94a3b8", fontSize: 20 }}>
+                                                ${product.price}
+                                            </Typography>
+                                            <Chip label={`You save $${(product.price - product.discountPrice).toFixed(2)}`}
+                                                size="small" color="success"
+                                                sx={{ fontWeight: 700, fontSize: 11 }} />
+                                        </Box>
+                                    </>
+                                ) : (
+                                    <Typography variant="h3" color="primary.main" fontWeight={900} lineHeight={1}>
                                         ${product.price}
                                     </Typography>
-                                    <Typography variant="caption" color="success.main" fontWeight="bold">
-                                        You save ${(product.price - product.discountPrice).toFixed(2)}
+                                )}
+                            </Box>
+
+                            {/* Stock */}
+                            <Box display="flex" alignItems="center" gap={1} mt={1.5}>
+                                <Box sx={{
+                                    width: 10, height: 10, borderRadius: "50%",
+                                    bgcolor: product.stock > 0 ? "#10b981" : "#ef4444",
+                                    boxShadow: product.stock > 0 ? "0 0 8px rgba(16,185,129,0.5)" : "none"
+                                }} />
+                                <Typography fontWeight={700} color={product.stock > 0 ? "success.main" : "error.main"}>
+                                    {product.stock > 5 ? `In Stock (${product.stock} available)`
+                                        : product.stock > 0 ? `Only ${product.stock} left!`
+                                            : "Out of Stock"}
+                                </Typography>
+                            </Box>
+                        </Box>
+
+                        {/* Qty + Buttons */}
+                        {product.stock > 0 && (
+                            <Box>
+                                <Typography variant="body2" fontWeight={700} color="text.secondary" mb={1.5}>
+                                    QUANTITY
+                                </Typography>
+                                <Box display="flex" gap={2} alignItems="center" mb={3} flexWrap="wrap">
+                                    <Box display="flex" alignItems="center"
+                                        sx={{ border: "2px solid #e2e8f0", borderRadius: 3, overflow: "hidden" }}>
+                                        <Button size="small" onClick={() => setQty(Math.max(1, qty - 1))}
+                                            sx={{ minWidth: 44, height: 44, color: "#64748b", borderRadius: 0, "&:hover": { bgcolor: "#f0f0ff", color: "#6366f1" } }}>
+                                            <RemoveIcon fontSize="small" />
+                                        </Button>
+                                        <Typography fontWeight={800} sx={{ px: 2.5, minWidth: 50, textAlign: "center" }}>
+                                            {qty}
+                                        </Typography>
+                                        <Button size="small" onClick={() => setQty(Math.min(product.stock, qty + 1))}
+                                            sx={{ minWidth: 44, height: 44, color: "#64748b", borderRadius: 0, "&:hover": { bgcolor: "#f0f0ff", color: "#6366f1" } }}>
+                                            <AddIcon fontSize="small" />
+                                        </Button>
+                                    </Box>
+
+                                    <Button variant="outlined" size="large"
+                                        startIcon={<ShoppingCartIcon />}
+                                        onClick={handleAddToCart}
+                                        sx={{
+                                            borderRadius: 3, px: 3, fontWeight: 700,
+                                            borderColor: "#6366f1", color: "#6366f1",
+                                            "&:hover": { bgcolor: "#f0f0ff" }
+                                        }}>
+                                        Add to Cart
+                                    </Button>
+
+                                    <Button variant="contained" size="large"
+                                        startIcon={<FlashOnIcon />}
+                                        onClick={handleBuyNow}
+                                        sx={{
+                                            borderRadius: 3, px: 4, fontWeight: 700,
+                                            background: "linear-gradient(135deg,#6366f1,#8b5cf6)",
+                                            boxShadow: "0 8px 25px rgba(99,102,241,0.35)",
+                                            "&:hover": { boxShadow: "0 12px 35px rgba(99,102,241,0.5)" }
+                                        }}>
+                                        Buy Now
+                                    </Button>
+                                </Box>
+                            </Box>
+                        )}
+
+                        {/* Guarantees */}
+                        <Box sx={{ p: 3, bgcolor: "white", borderRadius: 4, border: "1px solid #f1f5f9" }}>
+                            {guarantees.map((g, i) => (
+                                <Box key={i} display="flex" alignItems="center" gap={1.5}
+                                    sx={{ mb: i < guarantees.length - 1 ? 1.5 : 0 }}>
+                                    <Box sx={{ color: g.color }}>{g.icon}</Box>
+                                    <Typography variant="body2" fontWeight={600} color="text.secondary">
+                                        {g.text}
                                     </Typography>
                                 </Box>
-                            </>
-                        ) : (
-                            <Typography variant="h3" color="primary.main" fontWeight="bold">
-                                ${product.price}
-                            </Typography>
-                        )}
-                    </Box>
-
-                    {/* Stock */}
-                    <Typography
-                        color={product.stock > 0 ? "success.main" : "error.main"}
-                        fontWeight="bold" mb={3} variant="body1"
-                    >
-                        {product.stock > 0 ? `✓ In Stock — ${product.stock} units available` : "✗ Out of Stock"}
-                    </Typography>
-
-                    {/* Qty + Buttons */}
-                    {product.stock > 0 && (
-                        <Box display="flex" gap={2} alignItems="center" flexWrap="wrap">
-                            <TextField
-                                type="number" label="Qty" value={qty}
-                                onChange={(e) => setQty(Math.max(1, Math.min(product.stock, Number(e.target.value))))}
-                                size="small" sx={{ width: 90 }}
-                                inputProps={{ min: 1, max: product.stock }}
-                            />
-                            <Button variant="outlined" size="large" startIcon={<ShoppingCartIcon />}
-                                onClick={handleAddToCart}
-                                sx={{ textTransform: "none", borderRadius: 2, px: 3 }}>
-                                Add to Cart
-                            </Button>
-                            <Button variant="contained" size="large" onClick={handleBuyNow}
-                                sx={{
-                                    textTransform: "none", borderRadius: 2, px: 4,
-                                    background: "linear-gradient(90deg,#38bdf8,#6366f1)"
-                                }}>
-                                Buy Now
-                            </Button>
+                            ))}
                         </Box>
-                    )}
+                    </Grid>
                 </Grid>
-            </Grid>
+            </Container>
 
-            <Snackbar open={snack} autoHideDuration={2000} onClose={() => setSnack(false)}
+            <Snackbar open={snack} autoHideDuration={2500} onClose={() => setSnack(false)}
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}>
-                <Alert severity="success" onClose={() => setSnack(false)}>Added to cart!</Alert>
+                <Alert severity="success" onClose={() => setSnack(false)} sx={{ borderRadius: 3, fontWeight: 600 }}>
+                    ✓ Added to cart!
+                </Alert>
             </Snackbar>
-        </Container>
+        </Box>
     );
 }

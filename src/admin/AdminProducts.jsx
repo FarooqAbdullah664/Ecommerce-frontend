@@ -168,72 +168,214 @@ export default function AdminProducts() {
             )}
 
             {/* Add/Edit Dialog */}
-            <Dialog open={dialog.open} onClose={() => setDialog({ ...dialog, open: false })} maxWidth="md" fullWidth>
-                <DialogTitle sx={{ fontWeight: "bold" }}>
-                    {dialog.mode === "add" ? "➕ Add New Product" : "✏️ Edit Product"}
-                </DialogTitle>
-                <DialogContent>
-                    {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-                    <Grid container spacing={2} sx={{ mt: 0.5 }}>
-                        <Grid item xs={12} sm={6}>
-                            <TextField label="Product Name *" value={dialog.data.name}
-                                onChange={(e) => set("name", e.target.value)} fullWidth size="small" />
+            <Dialog
+                open={dialog.open}
+                onClose={() => setDialog({ ...dialog, open: false })}
+                maxWidth="md"
+                fullWidth
+                PaperProps={{
+                    sx: {
+                        borderRadius: 4,
+                        boxShadow: "0 25px 60px rgba(0,0,0,0.15)",
+                        overflow: "hidden"
+                    }
+                }}
+            >
+                {/* Dialog Header */}
+                <Box sx={{
+                    background: "linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%)",
+                    px: 4, py: 3,
+                    display: "flex", alignItems: "center", gap: 1.5
+                }}>
+                    <Box sx={{
+                        width: 38, height: 38, borderRadius: 2,
+                        background: "rgba(255,255,255,0.15)",
+                        display: "flex", alignItems: "center", justifyContent: "center"
+                    }}>
+                        <AddIcon sx={{ color: "white", fontSize: 20 }} />
+                    </Box>
+                    <Typography variant="h6" fontWeight="bold" color="white">
+                        {dialog.mode === "add" ? "Add New Product" : "Edit Product"}
+                    </Typography>
+                </Box>
+
+                <DialogContent sx={{ px: 4, py: 3, bgcolor: "#f8fafc" }}>
+                    {error && <Alert severity="error" sx={{ mb: 2.5, borderRadius: 2 }}>{error}</Alert>}
+
+                    {/* Section: Basic Info */}
+                    <Typography variant="caption" fontWeight="bold" color="text.secondary"
+                        sx={{ textTransform: "uppercase", letterSpacing: 1, mb: 1.5, display: "block" }}>
+                        Basic Information
+                    </Typography>
+                    <Box sx={{
+                        bgcolor: "white", borderRadius: 3, p: 2.5, mb: 2.5,
+                        boxShadow: "0 1px 4px rgba(0,0,0,0.06)"
+                    }}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    label="Product Name *"
+                                    value={dialog.data.name}
+                                    onChange={(e) => set("name", e.target.value)}
+                                    fullWidth size="small"
+                                    sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    label="Category *"
+                                    value={dialog.data.category}
+                                    onChange={(e) => set("category", e.target.value)}
+                                    fullWidth size="small"
+                                    select
+                                    SelectProps={{ native: true }}
+                                    InputLabelProps={{ shrink: true }}
+                                    sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
+                                >
+                                    <option value="">Select Category</option>
+                                    {categories.map((c) => <option key={c} value={c}>{c}</option>)}
+                                </TextField>
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    label="Brand"
+                                    value={dialog.data.brand}
+                                    onChange={(e) => set("brand", e.target.value)}
+                                    fullWidth size="small"
+                                    sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    label="Description *"
+                                    value={dialog.data.description}
+                                    onChange={(e) => set("description", e.target.value)}
+                                    fullWidth multiline rows={3}
+                                    sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField label="Category *" value={dialog.data.category}
-                                onChange={(e) => set("category", e.target.value)}
-                                fullWidth size="small" select SelectProps={{ native: true }}>
-                                <option value="">Select Category</option>
-                                {categories.map((c) => <option key={c} value={c}>{c}</option>)}
-                            </TextField>
+                    </Box>
+
+                    {/* Section: Pricing & Inventory */}
+                    <Typography variant="caption" fontWeight="bold" color="text.secondary"
+                        sx={{ textTransform: "uppercase", letterSpacing: 1, mb: 1.5, display: "block" }}>
+                        Pricing & Inventory
+                    </Typography>
+                    <Box sx={{
+                        bgcolor: "white", borderRadius: 3, p: 2.5, mb: 2.5,
+                        boxShadow: "0 1px 4px rgba(0,0,0,0.06)"
+                    }}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={4}>
+                                <TextField
+                                    label="Price *" type="number" value={dialog.data.price}
+                                    onChange={(e) => set("price", e.target.value)}
+                                    fullWidth size="small"
+                                    InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }}
+                                    sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <TextField
+                                    label="Discount Price" type="number" value={dialog.data.discountPrice}
+                                    onChange={(e) => set("discountPrice", e.target.value)}
+                                    fullWidth size="small"
+                                    InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }}
+                                    sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <TextField
+                                    label="Stock *" type="number" value={dialog.data.stock}
+                                    onChange={(e) => set("stock", e.target.value)}
+                                    fullWidth size="small"
+                                    sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    label="SKU *" value={dialog.data.sku}
+                                    onChange={(e) => set("sku", e.target.value)}
+                                    fullWidth size="small"
+                                    sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    label="Image URL" value={dialog.data.image}
+                                    onChange={(e) => set("image", e.target.value)}
+                                    fullWidth size="small"
+                                    placeholder="https://example.com/image.jpg"
+                                    sx={{ "& .MuiOutlinedInput-root": { borderRadius: 2 } }}
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField label="Brand" value={dialog.data.brand}
-                                onChange={(e) => set("brand", e.target.value)} fullWidth size="small" />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField label="SKU *" value={dialog.data.sku}
-                                onChange={(e) => set("sku", e.target.value)} fullWidth size="small" />
-                        </Grid>
-                        <Grid item xs={12} sm={4}>
-                            <TextField label="Price *" type="number" value={dialog.data.price}
-                                onChange={(e) => set("price", e.target.value)} fullWidth size="small"
-                                InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }} />
-                        </Grid>
-                        <Grid item xs={12} sm={4}>
-                            <TextField label="Discount Price" type="number" value={dialog.data.discountPrice}
-                                onChange={(e) => set("discountPrice", e.target.value)} fullWidth size="small"
-                                InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }} />
-                        </Grid>
-                        <Grid item xs={12} sm={4}>
-                            <TextField label="Stock *" type="number" value={dialog.data.stock}
-                                onChange={(e) => set("stock", e.target.value)} fullWidth size="small" />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField label="Image URL" value={dialog.data.image}
-                                onChange={(e) => set("image", e.target.value)} fullWidth size="small"
-                                placeholder="https://example.com/image.jpg" />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField label="Description *" value={dialog.data.description}
-                                onChange={(e) => set("description", e.target.value)}
-                                fullWidth multiline rows={3} />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControlLabel
-                                control={<Switch checked={dialog.data.isActive}
-                                    onChange={(e) => set("isActive", e.target.checked)} color="success" />}
-                                label="Product Active (visible to buyers)"
-                            />
-                        </Grid>
-                    </Grid>
+                    </Box>
+
+                    {/* Section: Visibility */}
+                    <Box sx={{
+                        bgcolor: "white", borderRadius: 3, px: 2.5, py: 1.5,
+                        boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+                        display: "flex", alignItems: "center", justifyContent: "space-between"
+                    }}>
+                        <Box>
+                            <Typography variant="body2" fontWeight="bold">Product Visibility</Typography>
+                            <Typography variant="caption" color="text.secondary">
+                                {dialog.data.isActive ? "Visible to buyers on the store" : "Hidden from buyers"}
+                            </Typography>
+                        </Box>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={dialog.data.isActive}
+                                    onChange={(e) => set("isActive", e.target.checked)}
+                                    color="success"
+                                />
+                            }
+                            label={
+                                <Chip
+                                    label={dialog.data.isActive ? "Active" : "Inactive"}
+                                    size="small"
+                                    color={dialog.data.isActive ? "success" : "default"}
+                                    sx={{ fontWeight: "bold", ml: 0.5 }}
+                                />
+                            }
+                            sx={{ mr: 0 }}
+                        />
+                    </Box>
                 </DialogContent>
-                <DialogActions sx={{ px: 3, pb: 3 }}>
-                    <Button onClick={() => setDialog({ ...dialog, open: false })} sx={{ textTransform: "none" }}>
+
+                <DialogActions sx={{
+                    px: 4, py: 2.5,
+                    bgcolor: "white",
+                    borderTop: "1px solid #e2e8f0",
+                    gap: 1.5
+                }}>
+                    <Button
+                        onClick={() => setDialog({ ...dialog, open: false })}
+                        sx={{
+                            textTransform: "none", borderRadius: 2,
+                            px: 3, color: "#64748b",
+                            "&:hover": { bgcolor: "#f1f5f9" }
+                        }}
+                    >
                         Cancel
                     </Button>
-                    <Button variant="contained" onClick={handleSave}
-                        sx={{ textTransform: "none", background: "linear-gradient(90deg,#38bdf8,#6366f1)" }}>
+                    <Button
+                        variant="contained"
+                        onClick={handleSave}
+                        sx={{
+                            textTransform: "none", borderRadius: 2, px: 4,
+                            background: "linear-gradient(135deg, #38bdf8, #6366f1)",
+                            boxShadow: "0 4px 15px rgba(99,102,241,0.4)",
+                            fontWeight: "bold",
+                            "&:hover": {
+                                background: "linear-gradient(135deg, #0ea5e9, #4f46e5)",
+                                boxShadow: "0 6px 20px rgba(99,102,241,0.5)"
+                            }
+                        }}
+                    >
                         {dialog.mode === "add" ? "Add Product" : "Save Changes"}
                     </Button>
                 </DialogActions>
